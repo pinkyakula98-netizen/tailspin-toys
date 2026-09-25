@@ -1,6 +1,33 @@
 import { test, expect, type Response } from '@playwright/test';
 
 test.describe('Game Listing and Navigation', () => {
+  test('should filter games by title as the user types', async ({ page }) => {
+    await test.step('Navigate to the game listing', async () => {
+      await page.goto('/');
+      await expect(page.getByTestId('games-grid')).toBeVisible();
+    });
+
+    const firstGame = page.getByTestId('game-card').first();
+    const firstGameTitle = await firstGame.getAttribute('data-game-title');
+    const searchInput = page.getByTestId('game-search-input');
+
+    await test.step('Search with a case-insensitive title fragment', async () => {
+      expect(firstGameTitle).not.toBeNull();
+      await searchInput.fill(firstGameTitle?.slice(0, 4).toLowerCase() ?? '');
+    });
+
+    await test.step('Verify matching cards remain visible', async () => {
+      await expect(firstGame).toBeVisible();
+      await expect(page.getByTestId('search-empty-state')).toBeHidden();
+    });
+
+    await test.step('Verify a no-match search shows an empty state', async () => {
+      await searchInput.fill('__no_matching_game__');
+      await expect(page.getByTestId('search-empty-state')).toBeVisible();
+      await expect(firstGame).toBeHidden();
+    });
+  });
+
   test('should display games with titles on index page', async ({ page }) => {
     await test.step('Navigate to homepage', async () => {
       await page.goto('/');
