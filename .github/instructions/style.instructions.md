@@ -52,3 +52,16 @@ ALL UI components MUST use dark theme colors:
 - Smooth transitions: `transition-all duration-200 ease-in-out`
 - Shadows for depth: `shadow-md`, `shadow-lg`, `shadow-xl`
 - Focus states for accessibility: `focus:ring-2 focus:ring-blue-500`
+
+## Comments and documentation philosophy
+
+- Prefer comments that explain intent, trade-offs, and constraints. If the code is obvious, do not add a comment.
+- Do not write comments that simply repeat the code in prose, especially for utility classes or markup that already reads clearly.
+- Update or remove stale comments whenever the surrounding code changes; outdated comments make the codebase less trustworthy.
+
+## TypeScript and formatting expectations
+
+- Use explicit TypeScript types for exported functions, component props, and helper return values.
+- Keep function names and variable names descriptive; prefer intent-revealing names over abbreviations.
+- Follow the repository's ESLint configuration for readable formatting and consistent code quality; do not add new rules that conflict with the project's established setup.
+- Prefer small, single-purpose functions and components to reduce the need for explanatory comments.
